@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+app:
+  api-prefix: /api/v1
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: book-service
+          uri: http://localhost:8081/
+          predicates:
+            - Path=${app.api-prefix}/book/**
+          filters:
+          - StripPrefix=1
+        - id: film-service
+          uri: http://localhost:8082/
+          predicates:
+            - Path=${app.api-prefix}/film/**
+          filters:
+          - StripPrefix=1
+#          - name: RequestRateLimiter
+#            args:
+#              redis-rate-limiter:
+#                replenishRate: 1000
+#                burstCapacity: 2000
+#                requestedTokens: 1
+
+#  redis:
+#    host: 10.210.39.122
+#    port: 6379
+#    password: Vnds@1234
+#    ssl: false
+#    jedis:
+#      pool:
+#        max-active: 7
+#        max-idle: 7
+#        min-idle: 2
+#        max-wait: -1ms
+  data:
+    redis:
+      database: 0
+      host: 10.210.39.122
+      port: 6379
+      password: Vnds@1234
+      ssl:
+        enabled: false
